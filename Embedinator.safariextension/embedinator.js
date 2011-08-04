@@ -107,7 +107,7 @@ var Embedinator = {
 
 			matchFnc: function () {
 				return Array.prototype.slice.call(document.querySelectorAll('object')).filter(function(object, index) {
-					return !!object.querySelector('param[value*="player.vimeo"]');
+					return !!object.querySelector('param[value*="moogaloop"]');
 				});
 			},
 			
