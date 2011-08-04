@@ -86,21 +86,17 @@ var Embedinator = {
 			 * 		]
 			 * 	}
 			 */
-			replaceEmbed: function(object, service, data) {
+			replaceEmbed: function(target, service, data) {
 				var fragment = document.createElement(), iframe;
 				fragment.innerHTML = tmpl(service.tmpl, data);
+			
+				iframe = fragment.childNodes[0];
 				
-				// setTimeout(function() {
-					iframe = fragment.childNodes[0];
-					
-					//insert iframe
-		            object.parentNode.insertBefore(iframe, object);
+				//insert iframe
+	            target.parentNode.insertBefore(iframe, target);
 
-		            //remove original
-		            object.parentNode.removeChild(object);
-					
-				// }, 10);
-				
+	            //remove original
+	            target.parentNode.removeChild(target);
 			}
 		},
 		
