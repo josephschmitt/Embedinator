@@ -105,7 +105,7 @@ var Embedinator = {
 
 		YOUTUBE: {
 			name: 'youtube',
-			tmpl: '<iframe width="<%= width %>" height="<%= height %>" src="http://www.youtube.com/embed/<%= clip_id %>" frameborder="0" <%= fullscreen ? "allowfullscreen" : "" %>></iframe>',
+			tmpl: '<iframe width="<%= width %>" height="<%= height %>" src="http://www.youtube.com/embed/<%= clip_id %>" frameborder="0" <%= fullscreen ? "allowfullscreen webkitallowfullscreen" : "" %>></iframe>',
 
 			matchFnc: function (object) {
 				var match = false,
@@ -137,7 +137,7 @@ var Embedinator = {
 
 		VIMEO: {
 			name: 'vimeo',
-			tmpl: '<iframe src="http://player.vimeo.com/video/<%= clip_id %>?<%= qparams %>" width="<%= width %>" height="<%= height %>" frameborder="0"></iframe>',
+			tmpl: '<iframe src="http://player.vimeo.com/video/<%= clip_id %>?<%= qparams %>" width="<%= width %>" height="<%= height %>" frameborder="0" allowfullscreen webkitallowfullscreen></iframe>',
 
 			matchFnc: function (object) {
 				var match = false,
