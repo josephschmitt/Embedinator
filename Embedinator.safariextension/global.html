@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Embedinator</title>
+    </head>
+    <body>
+        <script>
+            var target,
+                settings = {
+                    autorun: safari.extension.settings.autorun
+                };
+        
+            //Handle requests from the content script
+            safari.application.addEventListener("message", function(e) {
+                target = e.target;
+                updateEmbed();
+            },false);
+
+			safari.application.addEventListener('command', function(e) {
+				if (e.command === 'embedinate') {
+					target.page.dispatchMessage('embedinate');
+				}
+			}, false);
+            
+            //Handles changes to form options
+            safari.extension.settings.addEventListener("change", function(e) {
+                settings[e.key] = e.newValue;
+                updateEmbed();
+            }, false);
+            
+            function updateEmbed() {
+                target.page.dispatchMessage('receiveSettings', {settings: settings});
+            }
+        </script>
+    </body>
+</html>
