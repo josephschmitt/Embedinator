@@ -38,41 +38,13 @@
 var Embedinator = {
 		Util: {
 			getEmbedsForService: function (service) {
-				function isMatch(obj) {
-					return service.matchFnc.call(null, obj);
-				}
-
-				var objects = document.getElementsByTagName('object'),
-					matches = [], 
-					object, value;
-
-			    for( var i=0; i<objects.length; i++ ) {
-			        object = objects[i];
-
-					value = isMatch(object);
-					if (value) {
-						matches.push({obj: object, val: value});
-					}
-			    }
-
-				return matches;
+				return service.matchFnc.call().map(function(match) {
+					return {obj: match, val: Embedinator.Util.getValueFromObject(match)};
+				});;
 			},
 
 			getValueFromObject: function (object) {
-				var value = object.getAttribute('data');
-
-				if (!value) {
-					var params = object.getElementsByTagName('param'), param, name, i;
-					for( i=0; i<params.length; i++) {
-				        param = params[i];
-				        name = param.getAttribute('name');
-
-				        if( name == 'src' || name == 'movie' ) {
-				            value = param.getAttribute('value');
-				        }
-				    }
-				}
-
+				var value = object.getAttribute('data') || object.querySelector('param[name*="src"], param[name*="movie"]').getAttribute('value') || '';
 				return value;
 			},
 			
@@ -108,15 +80,9 @@ var Embedinator = {
 			tmpl: '<iframe width="<%= width %>" height="<%= height %>" src="http://www.youtube.com/embed/<%= clip_id %>" frameborder="0" <%= fullscreen ? "allowfullscreen webkitallowfullscreen" : "" %>></iframe>',
 
 			matchFnc: function (object) {
-				var match = false,
-					value = Embedinator.Util.getValueFromObject(object),
-					urlTest = /youtube.com\/v/;
-				
-				if (urlTest.test(value)) {
-					match = value;
-				}
-				
-				return match;
+				return Array.prototype.slice.call(document.querySelectorAll('object')).filter(function(object, index) {
+					return !!object.querySelector('param[value*="youtube.com/v"]');
+				});
 			},
 			
 			getData: function (object, value) {
@@ -139,18 +105,10 @@ var Embedinator = {
 			name: 'vimeo',
 			tmpl: '<iframe src="http://player.vimeo.com/video/<%= clip_id %>?<%= qparams %>" width="<%= width %>" height="<%= height %>" frameborder="0" allowfullscreen webkitallowfullscreen></iframe>',
 
-			matchFnc: function (object) {
-				var match = false,
-					value = Embedinator.Util.getValueFromObject(object),
-					moogTest = /moogaloop/,
-			    	idTest = /clip_id/;
-
-			    //Checks for url in the object data attribute
-			    if(moogTest.test(value) && idTest.test(value)) {
-					match = value;
-			    }
-
-				return match;
+			matchFnc: function () {
+				return Array.prototype.slice.call(document.querySelectorAll('object')).filter(function(object, index) {
+					return !!object.querySelector('param[value*="player.vimeo"]');
+				});
 			},
 			
 			getData: function (object, value) {
