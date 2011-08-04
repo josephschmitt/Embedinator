@@ -10,9 +10,9 @@
        <key>Developer Identifier</key>
        <string>XP9NB89UY5</string>
        <key>CFBundleVersion</key>
-       <string>1</string>
+       <string>2</string>
        <key>CFBundleShortVersionString</key>
-       <string>1.0</string>
+       <string>1.1</string>
        <key>URL</key>
        <string>https://s3.amazonaws.com/reusebits/embedinator/Embedinator.safariextz</string>
      </dict>
