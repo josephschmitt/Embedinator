@@ -9,7 +9,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Embedinator</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.reusablebits</string>
+	<string>com.reusablebits.embedinator</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -34,7 +34,7 @@
 				<key>Palette Label</key>
 				<string>Embedinate</string>
 				<key>Tool Tip</key>
-				<string>Embedinate</string>
+				<string>Run Embedinator on this page</string>
 			</dict>
 		</array>
 	</dict>
@@ -63,6 +63,8 @@
 			<string>All</string>
 		</dict>
 	</dict>
+	<key>Update Manifest URL</key>
+	<string>https://s3.amazonaws.com/reusebits/embedinator/update.plist</string>
 	<key>Website</key>
 	<string>http://reusablebits.com</string>
 </dict>

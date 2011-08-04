@@ -125,7 +125,8 @@ var Embedinator = {
 			
 			getData: function (object, value) {
 					var clip_id = value.split('/v/')[1].split('&')[0],
-						allowFullscreen = object.querySelector('param[name="allowFullScreen"]').getAttribute('value') == "true" ? true : false,
+						fsParam = object.querySelector('param[name="allowFullScreen"]'),
+						allowFullscreen = fsParam ? fsParam.getAttribute('value') == "true" ? true : false : false,
 		
 					data = {
 						width: object.getAttribute('width'),
