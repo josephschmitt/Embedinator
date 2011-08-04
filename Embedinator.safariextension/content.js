@@ -34,3 +34,9 @@ if (/youtube.com/.test(window.location.href)) {
 	//Remove No Flash alert
 	alert.parentNode.removeChild(alert);
 }
+
+//Enables iframe fullscreen on all Vimeo embeds
+Array.prototype.slice.call(document.querySelectorAll('iframe[src*="vimeo"]')).forEach(function(iframe) {
+	iframe.setAttribute('webkitallowfullscreen', 'webkitallowfullscreen');
+	iframe.setAttribute('allowfullscreen', 'allowfullscreen');
+});
