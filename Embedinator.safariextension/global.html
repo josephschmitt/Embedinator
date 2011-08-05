@@ -6,14 +6,29 @@
     <body>
         <script>
             var target,
-                settings = {};
+                settings = {},
+				button;
+			
+			safari.extension.toolbarItems.forEach(function(item) {
+				if (item.identifier == 'embedinateBtn') {
+					button = item;
+				}
+			});
         
             //Handle requests from the content script
             safari.application.addEventListener("message", function(e) {
                 target = e.target;
-
+				
+				console.log('message', e);
 				//Extension INIT
-                updateSettings({autorun: safari.extension.settings.autorun});
+				if (e.name == 'init') {
+					updateSettings({autorun: safari.extension.settings.autorun});
+					
+					if (e.message.count) {
+						console.log('Update Count', + e.message.count);
+						button.badge = e.message.count;
+					}
+				}
             },false);
 			
 			//Listens for commands
