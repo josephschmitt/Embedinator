@@ -4,11 +4,15 @@
 <array>
 	<dict>
 		<key>DefaultValue</key>
-		<true/>
+		<real>1</real>
+		<key>FalseValue</key>
+		<real>0.0</real>
 		<key>Key</key>
 		<string>autorun</string>
 		<key>Title</key>
 		<string>Automatically run on page load.</string>
+		<key>TrueValue</key>
+		<real>1</real>
 		<key>Type</key>
 		<string>CheckBox</string>
 	</dict>

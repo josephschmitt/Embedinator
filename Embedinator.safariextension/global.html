@@ -6,31 +6,48 @@
     <body>
         <script>
             var target,
-                settings = {
-                    autorun: safari.extension.settings.autorun
-                };
+                settings = {};
         
             //Handle requests from the content script
             safari.application.addEventListener("message", function(e) {
                 target = e.target;
-                updateEmbed();
-            },false);
 
+				//Extension INIT
+                updateSettings({autorun: safari.extension.settings.autorun});
+            },false);
+			
+			//Listens for commands
 			safari.application.addEventListener('command', function(e) {
+				//Runs embedinate on current page
 				if (e.command === 'embedinate') {
-					target.page.dispatchMessage('embedinate');
+					embedinate();
+				}
+				//Listens to changing autorun setting from menu
+				else if (e.command === 'toggleAutorun') {
+					updateSettings({autorun: e.target.checkedState == e.target.CHECKED ? e.target.UNCHECKED : e.target.CHECKED});
 				}
 			}, false);
+			
+			//Update menu contents
+			safari.application.addEventListener('menu', function(e) {
+				e.target.menuItems[0].checkedState = settings.autorun;
+			}, false);
             
-            //Handles changes to form options
-            safari.extension.settings.addEventListener("change", function(e) {
-                settings[e.key] = e.newValue;
-                updateEmbed();
-            }, false);
-            
-            function updateEmbed() {
-                target.page.dispatchMessage('receiveSettings', {settings: settings});
-            }
+			function updateSettings(newSettings) {
+				Object.keys(newSettings).forEach(function(newSetting) {
+					safari.extension.settings[newSetting] = newSettings[newSetting];
+				});
+				settings = safari.extension.settings;
+				
+				//Run embedinate if turning autorun ON
+				if (settings.autorun) {
+					embedinate();
+				}
+			}
+			
+			function embedinate() {
+				target.page.dispatchMessage('embedinate');
+			}
         </script>
     </body>
 </html>

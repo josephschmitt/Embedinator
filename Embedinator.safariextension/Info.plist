@@ -18,8 +18,39 @@
 	<string>4</string>
 	<key>Chrome</key>
 	<dict>
+		<key>Context Menu Items</key>
+		<array>
+			<dict>
+				<key>Command</key>
+				<string>embedinate</string>
+				<key>Identifier</key>
+				<string>embedinateCtx</string>
+				<key>Title</key>
+				<string>Run Embedinator on this page</string>
+			</dict>
+		</array>
 		<key>Global Page</key>
 		<string>global.html</string>
+		<key>Menus</key>
+		<array>
+			<dict>
+				<key>Identifier</key>
+				<string>embedinatorMenu</string>
+				<key>Menu Items</key>
+				<array>
+					<dict>
+						<key>Checked State</key>
+						<real>1</real>
+						<key>Command</key>
+						<string>toggleAutorun</string>
+						<key>Identifier</key>
+						<string>autorunMenu</string>
+						<key>Title</key>
+						<string>Autorun on page load</string>
+					</dict>
+				</array>
+			</dict>
+		</array>
 		<key>Toolbar Items</key>
 		<array>
 			<dict>
@@ -31,6 +62,8 @@
 				<string>Icon-16.png</string>
 				<key>Label</key>
 				<string>Embedinate</string>
+				<key>Menu</key>
+				<string>embedinatorMenu</string>
 				<key>Palette Label</key>
 				<string>Embedinate</string>
 				<key>Tool Tip</key>
