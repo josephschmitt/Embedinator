@@ -46,11 +46,19 @@
 						<key>Identifier</key>
 						<string>autorunMenu</string>
 						<key>Title</key>
-						<string>Autorun on page load</string>
+						<string>Autorun</string>
 					</dict>
 					<dict>
+						<key>Checked State</key>
+						<real>1</real>
+						<key>Command</key>
+						<string>toggleBadge</string>
+						<key>Identifier</key>
+						<string>showBadge</string>
 						<key>Separator</key>
-						<true/>
+						<false/>
+						<key>Title</key>
+						<string>Show badge</string>
 					</dict>
 					<dict>
 						<key>Checked State</key>
@@ -58,9 +66,19 @@
 						<key>Command</key>
 						<string>embedinate</string>
 						<key>Identifier</key>
-						<string>embedinate</string>
+						<string></string>
+						<key>Separator</key>
+						<true/>
 						<key>Title</key>
 						<string>Run Embedinator on Page</string>
+					</dict>
+					<dict>
+						<key>Command</key>
+						<string>embedinate</string>
+						<key>Identifier</key>
+						<string>embedinate</string>
+						<key>Title</key>
+						<string>Run Embedinator</string>
 					</dict>
 				</array>
 			</dict>

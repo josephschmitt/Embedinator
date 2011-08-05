@@ -7,62 +7,85 @@
         <script>
             var target,
                 settings = {},
-				button;
-			
-			safari.extension.toolbarItems.forEach(function(item) {
-				if (item.identifier == 'embedinateBtn') {
-					button = item;
-				}
-			});
-        
+                button;
+
             //Handle requests from the content script
             safari.application.addEventListener("message", function(e) {
+                //Get references
                 target = e.target;
-				
-				console.log('message', e);
-				//Extension INIT
-				if (e.name == 'init') {
-					updateSettings({autorun: safari.extension.settings.autorun});
-					
-					if (e.message.count) {
-						console.log('Update Count', + e.message.count);
-						button.badge = e.message.count;
-					}
-				}
+
+                safari.extension.toolbarItems.forEach(function(item) {
+                    if (item.identifier == 'embedinateBtn') {
+                        button = item;
+                    }
+                });
+
+
+                //Extension INIT
+                if (e.name == 'init') {
+                    updateSettings({
+                        autorun: safari.extension.settings.autorun,
+                        showBadge: safari.extension.settings.showBadge
+                    });
+
+                    if (settings.showBadge && e.message.count) {
+                        button.badge = e.message.count;
+                    }
+                }
             },false);
-			
-			//Listens for commands
-			safari.application.addEventListener('command', function(e) {
-				//Runs embedinate on current page
-				if (e.command === 'embedinate') {
-					embedinate();
-				}
-				//Listens to changing autorun setting from menu
-				else if (e.command === 'toggleAutorun') {
-					updateSettings({autorun: e.target.checkedState == e.target.CHECKED ? e.target.UNCHECKED : e.target.CHECKED});
-				}
-			}, false);
-			
-			//Update menu contents
-			safari.application.addEventListener('menu', function(e) {
-				e.target.menuItems[0].checkedState = settings.autorun;
-			}, false);
-            
-			function updateSettings(newSettings) {
-				Object.keys(newSettings).forEach(function(newSetting) {
-					safari.extension.settings[newSetting] = newSettings[newSetting];
-				});
-				settings = safari.extension.settings;
-				
-				//Run embedinate if turning autorun ON
-				if (settings.autorun) {
-					embedinate();
-				}
+
+            //Listens for commands
+            safari.application.addEventListener('command', function(e) {
+                //Runs embedinate on current page
+                if (e.command === 'embedinate') {
+                    embedinate();
+                }
+                //Listens to changing autorun setting from menu
+                else if (e.command === 'toggleAutorun') {
+                    updateSettings({autorun: e.target.checkedState == e.target.CHECKED ? e.target.UNCHECKED : e.target.CHECKED});
+                }
+                else if (e.command === 'toggleBadge') {
+                    updateSettings({showBadge: e.target.checkedState == e.target.CHECKED ? e.target.UNCHECKED : e.target.CHECKED});
+                }
+            }, false);
+
+            //Update menu contents
+            safari.application.addEventListener('menu', function(e) {
+                e.target.menuItems[0].checkedState = settings.autorun;
+                e.target.menuItems[1].checkedState = settings.showBadge;
+            }, false);
+
+            //Listen for settings changes
+            safari.extension.settings.addEventListener("change", function(e) {
+				onSettingsUpdated();
+            }, false);
+
+
+
+            function updateSettings(newSettings) {
+                Object.keys(newSettings).forEach(function(newSetting) {
+                    safari.extension.settings[newSetting] = newSettings[newSetting];
+                });
+                settings = safari.extension.settings;
+
+                onSettingsUpdated()
+            }
+
+			function onSettingsUpdated() {
+				//Turn badge off if on
+                if (!settings.showBadge) {
+                    button.badge = 0;
+                }
+
+                //Run embedinate if turning autorun ON
+                if (settings.autorun) {
+                    embedinate();
+                }
 			}
-			
-			function embedinate() {
-				target.page.dispatchMessage('embedinate');
-			}
+
+            function embedinate() {
+                target.page.dispatchMessage('embedinate');
+            }
         </script>
     </body>
 </html>
