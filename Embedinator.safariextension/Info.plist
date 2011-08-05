@@ -48,6 +48,20 @@
 						<key>Title</key>
 						<string>Autorun on page load</string>
 					</dict>
+					<dict>
+						<key>Separator</key>
+						<true/>
+					</dict>
+					<dict>
+						<key>Checked State</key>
+						<real>0.0</real>
+						<key>Command</key>
+						<string>embedinate</string>
+						<key>Identifier</key>
+						<string>embedinate</string>
+						<key>Title</key>
+						<string>Run Embedinator on Page</string>
+					</dict>
 				</array>
 			</dict>
 		</array>
