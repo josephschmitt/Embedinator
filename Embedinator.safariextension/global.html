@@ -5,14 +5,14 @@
     </head>
     <body>
         <script>
-            var target,
+            var curTab,
                 settings = {},
                 button;
 
             //Handle requests from the content script
             safari.application.addEventListener("message", function(e) {
                 //Get references
-                target = e.target;
+                curTab = e.target;
 
                 safari.extension.toolbarItems.forEach(function(item) {
                     if (item.identifier == 'embedinateBtn') {
@@ -20,17 +20,19 @@
                     }
                 });
 
-
                 //Extension INIT
                 if (e.name == 'init') {
                     updateSettings({
                         autorun: safari.extension.settings.autorun,
                         showBadge: safari.extension.settings.showBadge
                     });
-
-                    if (settings.showBadge && e.message.count) {
-                        button.badge = e.message.count;
+                    
+                    if (settings.showBadge) {
+                        getBadgeCount();
                     }
+                }
+                else if (e.name == 'updateBadge') {
+                    button.badge = e.message.count;
                 }
             },false);
 
@@ -54,12 +56,20 @@
                 e.target.menuItems[0].checkedState = settings.autorun;
                 e.target.menuItems[1].checkedState = settings.showBadge;
             }, false);
-
+            
+            //Listens for a tab to become active
+            safari.application.activeBrowserWindow.tabs.forEach(function(tab) {
+                tab.addEventListener('activate', function(e) {
+                    curTab = e.target;
+                    getBadgeCount();
+                });
+            });
+            
             //Listen for settings changes
             safari.extension.settings.addEventListener("change", function(e) {
-				onSettingsUpdated();
+                onSettingsUpdated();
             }, false);
-
+            
 
 
             function updateSettings(newSettings) {
@@ -71,8 +81,8 @@
                 onSettingsUpdated()
             }
 
-			function onSettingsUpdated() {
-				//Turn badge off if on
+            function onSettingsUpdated() {
+                //Turn badge off if on
                 if (!settings.showBadge) {
                     button.badge = 0;
                 }
@@ -81,10 +91,14 @@
                 if (settings.autorun) {
                     embedinate();
                 }
-			}
+            }
 
             function embedinate() {
-                target.page.dispatchMessage('embedinate');
+                curTab.page.dispatchMessage('embedinate');
+            }
+            
+            function getBadgeCount(tab) {
+                curTab.page.dispatchMessage('getBadgeCount');
             }
         </script>
     </body>

@@ -2,13 +2,16 @@ if (window.top === window) {
 	//Listen for messages from global page
     safari.self.addEventListener('message', function(e) {
         if (e.name == 'embedinate') {
-			Embedinator.embedinate();
-		}
+          Embedinator.embedinate();
+        }
+        else if (e.name == 'getBadgeCount') {
+          safari.self.tab.dispatchMessage('updateBadge', {count: Embedinator.getMatchCount()});
+        }
     }, false);
 
 
 	//INIT
-    safari.self.tab.dispatchMessage('init', {count: Embedinator.getMatchCount()});
+    safari.self.tab.dispatchMessage('init');
 
 	//On YouTube website
 	if (/youtube.com/.test(window.location.href)) {
